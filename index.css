@@ -19,6 +19,7 @@
 .nav-items > ul > li{
     padding: 10px;
     margin: 10px;
+   
 }
 
 .res-container{
@@ -39,8 +40,10 @@
         cursor: pointer;
     }
 
-.search{
+.filter-btn{
     padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
 }
 
 .res-logo{
@@ -51,3 +54,25 @@
     text-align: center;
     background-color: yellow;
 }
+
+.shimmer-container{
+    display: flex;
+}
+
+.shimmer-card{
+
+    margin: 20px;
+    width: 200px;
+    height: 400px;
+    background-color: #c5c5c5;
+}
+
+.login{
+    padding: 0 20px;
+    cursor: pointer;
+}
+
+.filter{
+    display: flex;
+}
+
