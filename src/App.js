@@ -11,6 +11,8 @@ import Shimmer from "./Components/Shimmer";
 import Usercontext from "./Utils/UserContext";
 import { useState } from "react";
 import Usercontext from "./Utils/UserContext";
+import { Provider } from "react-redux";
+import appStore from "./Utils/appStore";
 
 
 const Grocery = lazy(() => import("./Components/Grocery"));
@@ -25,14 +27,15 @@ const AppLayout = () => {
     setUserName(data.name)
   },[])
   return (
-
-    <Usercontext.Provider value={{loggedinUser: userName}}>
+    <Provider store={appStore}>    <Usercontext.Provider value={{loggedinUser: userName}}>
       <div className="App">
         <Header />
         <Outlet />
         <Footer />
       </div>
     </Usercontext.Provider>
+    </Provider>
+
   );
 };
 
