@@ -1,4 +1,4 @@
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, {withPromotedlabel} from "./RestaurantCard";
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
@@ -16,22 +16,22 @@ const Body = () => {
 
   const fetchData = async () => {
     const data = await fetch(
-     MAIN_API
+    "https://www.swiggy.com/dapi/restaurants/list/v5?lat=23.022505&lng=72.5713621&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
     );
     const json = await data.json();
 
     setListofRestaurants(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
     setfilteredRestaurants(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
-    console.log(json?.data);
+   
     console.log(
-      json?.data?.cards[3]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      json?.data?.cards[0]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
   };
-
+  const Restaurantwithpromoted = withPromotedlabel(RestaurantCard);
   const onlinestatus = useOnlineStatus();
   if (onlinestatus === false) return <h1>Please check internet connection</h1>;
   //Shimmer Component conditional randering
@@ -40,44 +40,46 @@ const Body = () => {
     <Shimmer />
   ) : (
     <div className="body">
-      <div className="filter">
-        <div className="search">
+      <div className="flex">
+        <div className="m-4 p-4">
           <input
             type="text"
-            className="search-box"
+            className=" rounded-md border border-solid border-black"
             value={searchText}
             onChange={(e) => {
               setsearchText(e.target.value);
             }}
           />
           <button
-            className="search"
+            className="px-4 py-2 m-4 bg-yellow-300 rounded-md"
             onClick={() => {
-              console.log(searchText);
+            
               const filteredRestaurant = listofRestaurants.filter((res) =>
                 res.info.name.toLowerCase().includes(searchText.toLowerCase())
               );
-              console.log(filteredRestaurant);
+            
               setfilteredRestaurants(filteredRestaurant);
             }}
           >
             Search
           </button>
         </div>
-        <button
-          className="filter-btn"
-          onClick={() => {
-            const filteredList = listofRestaurants.filter(
-              (res) => res.info.avgRating > 4.2
-            );
-            setListofRestaurants(filteredList);
-          }}
-        >
-          Top Rated Restaurants
-        </button>
+      <div className="m-4 p-4 flex text-center">
+          <button
+            className="px-2 py-2 bg-yellow-300 rounded-sm"
+            onClick={() => {
+              const filteredList = listofRestaurants.filter(
+                (res) => res.info.avgRating > 4.2
+              );
+              setListofRestaurants(filteredList);
+            }}
+          >
+            Top Rated Restaurants
+          </button>
+      </div>
       </div>
 
-      <div className="res-container">
+      <div className="flex flex-wrap">
         {
           //map fn will take call back fn
           //key should be on parent JSX
@@ -86,7 +88,8 @@ const Body = () => {
               to={"/restaurants/" + restaurant.info.id}
               key={restaurant.info.id}
             >
-              <RestaurantCard resData={restaurant} />
+              {restaurant.info.promoted ? <withPromotedlabel resData={restaurant}/> : <RestaurantCard resData={restaurant} />}
+             
             </Link>
           ))
         }
