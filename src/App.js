@@ -13,6 +13,7 @@ import { useState } from "react";
 import Usercontext from "./Utils/UserContext";
 import { Provider } from "react-redux";
 import appStore from "./Utils/appStore";
+import Cart from "./Components/Cart";
 
 
 const Grocery = lazy(() => import("./Components/Grocery"));
@@ -52,6 +53,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      {
+        path: "/cart",
+        element: <Cart/>,
       },
       {
         path: "/restaurants/:resId", //: dynemic data
